@@ -7,9 +7,8 @@ Hello and welcome to the Flutter AI Toolkit!
 The AI Toolkit is a set of AI chat-related widgets to make it easy to add an AI
 chat window to your Flutter app. The AI Toolkit is organized around an abstract
 LLM provider API to make it easy to swap out the LLM provider that you'd like
-your chat provider to use. Out of the box, it comes with support for two LLM
-provider integrations: [Google Gemini AI](https://ai.google.dev/gemini-api/docs)
-and [Firebase Vertex AI](https://firebase.google.com/docs/vertex-ai).
+your chat provider to use. Out of the box, it comes with support for three LLM
+provider integrations: [Google Gemini AI](https://ai.google.dev/gemini-api/docs), [Firebase Vertex AI](https://firebase.google.com/docs/vertex-ai) and [open-webui](https://github.com/open-webui/open-webui).
 
 ## Key Features
 * **Multi-turn chat:** Maintains context across multiple interactions.  
