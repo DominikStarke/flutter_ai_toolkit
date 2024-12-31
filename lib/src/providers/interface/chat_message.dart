@@ -98,9 +98,8 @@ class ChatMessage {
 
   /// The various builders for each fragment (should be actual order)
   /// User definable data associated with the message.
-  final List<ChatMessageFragment> leading = []; /// Typically these are file attachments
-  final List<ChatMessageFragment> body = []; /// 
-  final ChatMessageFragment outlet = MarkdownFragment(); /// This is typically the one filled during generation
+  final List<ChatMessageFragment> leading = []; /// Typically these are file attachments, loaders, search results, etc.
+  final MarkdownFragment outlet = MarkdownFragment(); /// This is typically the one filled during generation
   final List<ChatMessageFragment> trailing = [];
 
   /// Appends additional text to the existing message content.
@@ -109,8 +108,10 @@ class ChatMessage {
   void append (String text) {
     if(_textBuffer == null) {
       _textBuffer = StringBuffer(text);
+      outlet.text = text;
     } else {
       _textBuffer!.write(text);
+      outlet.text = _textBuffer.toString();
     }
   }
 
@@ -118,6 +119,8 @@ class ChatMessage {
 
   /// Returns true if text is uninitialized (null).
   bool isUninitialized () => _textBuffer == null;
+  /// Returns true if text is initialized (null).
+  bool isInitialized () => _textBuffer != null;
 
   @override
   String toString() => 'ChatMessage('
