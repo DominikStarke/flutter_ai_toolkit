@@ -7,15 +7,17 @@
 
 import 'dart:convert';
 
+
 import '../../providers/interface/attachments.dart';
 import 'message_origin.dart';
+import 'chat_message_fragment.dart';
 
 /// Represents a message in a chat conversation.
 ///
 /// This class encapsulates the properties and behavior of a chat message,
 /// including its unique identifier, origin (user or LLM), text content,
 /// and any attachments.
-class ChatMessage<T> {
+class ChatMessage {
   /// Constructs a [ChatMessage] instance.
   ///
   /// The [origin] parameter specifies the origin of the message (user or LLM).
@@ -29,8 +31,7 @@ class ChatMessage<T> {
     required this.origin,
     required this.text,
     required this.attachments,
-             this.userData,
-  }) : assert(origin.isUser && text != null && text.isNotEmpty || origin.isLlm);
+  }):assert(origin.isUser && text != null && text.isNotEmpty || origin.isLlm);
 
   /// Converts a JSON map representation to a [ChatMessage].
   ///
@@ -93,7 +94,7 @@ class ChatMessage<T> {
   final Iterable<Attachment> attachments;
 
   /// User definable data associated with the message.
-  final T? userData;  
+  final List<ChatMessageFragment> fragments = [];
 
   /// Appends additional text to the existing message content.
   ///
