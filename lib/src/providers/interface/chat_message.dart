@@ -34,7 +34,10 @@ class ChatMessage {
     String? text,
     required this.attachments,
   }): _textBuffer = text == null ? null : StringBuffer(text),
-      assert(origin.isUser && text != null && text.isNotEmpty || origin.isLlm);
+      assert(origin.isUser && text != null && text.isNotEmpty || origin.isLlm)
+  {
+    outlet.text = this.text;
+  }
 
   /// Converts a JSON map representation to a [ChatMessage].
   ///

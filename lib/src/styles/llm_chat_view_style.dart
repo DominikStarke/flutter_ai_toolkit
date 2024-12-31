@@ -60,7 +60,7 @@ class LlmChatViewStyle {
           style?.progressIndicatorColor ?? defaultStyle.progressIndicatorColor,
       userMessageStyle: UserMessageStyle.resolve(style?.userMessageStyle,
           defaultStyle: defaultStyle.userMessageStyle),
-      llmMessageStyle: LlmMessageStyle.resolve(style?.llmMessageStyle,
+      llmMessageStyle: ChatMessageStyle.resolve(style?.llmMessageStyle,
           defaultStyle: defaultStyle.llmMessageStyle),
       chatInputStyle: ChatInputStyle.resolve(style?.chatInputStyle,
           defaultStyle: defaultStyle.chatInputStyle),
@@ -131,7 +131,7 @@ class LlmChatViewStyle {
         backgroundColor: ToolkitColors.containerBackground,
         progressIndicatorColor: ToolkitColors.black,
         userMessageStyle: UserMessageStyle.defaultStyle(),
-        llmMessageStyle: LlmMessageStyle.defaultStyle(),
+        llmMessageStyle: ChatMessageStyle.defaultStyle(),
         chatInputStyle: ChatInputStyle.defaultStyle(),
         addButtonStyle: ActionButtonStyle.defaultStyle(ActionButtonType.add),
         stopButtonStyle: ActionButtonStyle.defaultStyle(ActionButtonType.stop),
@@ -171,7 +171,7 @@ class LlmChatViewStyle {
   final UserMessageStyle? userMessageStyle;
 
   /// Style for LLM messages.
-  final LlmMessageStyle? llmMessageStyle;
+  final ChatMessageStyle? llmMessageStyle;
 
   /// Style for the input text box.
   final ChatInputStyle? chatInputStyle;

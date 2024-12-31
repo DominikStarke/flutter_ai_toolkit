@@ -272,7 +272,7 @@ class _ChatPageState extends State<ChatPage>
           ],
         ),
       ),
-      llmMessageStyle: LlmMessageStyle(
+      llmMessageStyle: ChatMessageStyle(
         icon: Icons.sentiment_very_satisfied,
         iconColor: Colors.black,
         iconDecoration: BoxDecoration(

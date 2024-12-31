@@ -11,9 +11,9 @@ import 'toolkit_text_styles.dart';
 
 /// Style for LLM messages.
 @immutable
-class LlmMessageStyle {
+class ChatMessageStyle {
   /// Creates an LlmMessageStyle.
-  const LlmMessageStyle({
+  const ChatMessageStyle({
     this.icon,
     this.iconColor,
     this.iconDecoration,
@@ -23,7 +23,7 @@ class LlmMessageStyle {
 
   /// Resolves the provided style with the default style.
   ///
-  /// This method creates a new [LlmMessageStyle] by combining the provided
+  /// This method creates a new [ChatMessageStyle] by combining the provided
   /// [style] with the [defaultStyle]. If a property is not specified in the
   /// provided [style], it falls back to the corresponding property in the
   /// [defaultStyle].
@@ -35,13 +35,13 @@ class LlmMessageStyle {
   ///   - [defaultStyle]: The default style to use as a fallback. If null, uses
   ///     [LlmMessageStyle.defaultStyle].
   ///
-  /// Returns: A new [LlmMessageStyle] instance with resolved properties.
-  factory LlmMessageStyle.resolve(
-    LlmMessageStyle? style, {
-    LlmMessageStyle? defaultStyle,
+  /// Returns: A new [ChatMessageStyle] instance with resolved properties.
+  factory ChatMessageStyle.resolve(
+    ChatMessageStyle? style, {
+    ChatMessageStyle? defaultStyle,
   }) {
-    defaultStyle ??= LlmMessageStyle.defaultStyle();
-    return LlmMessageStyle(
+    defaultStyle ??= ChatMessageStyle.defaultStyle();
+    return ChatMessageStyle(
       icon: style?.icon ?? defaultStyle.icon,
       iconColor: style?.iconColor ?? defaultStyle.iconColor,
       iconDecoration: style?.iconDecoration ?? defaultStyle.iconDecoration,
@@ -51,10 +51,10 @@ class LlmMessageStyle {
   }
 
   /// Provides a default style.
-  factory LlmMessageStyle.defaultStyle() => LlmMessageStyle._lightStyle();
+  factory ChatMessageStyle.defaultStyle() => ChatMessageStyle._lightStyle();
 
   /// Provides a default light style.
-  factory LlmMessageStyle._lightStyle() => LlmMessageStyle(
+  factory ChatMessageStyle._lightStyle() => ChatMessageStyle(
         icon: ToolkitIcons.spark_icon,
         iconColor: ToolkitColors.darkIcon,
         iconDecoration: const BoxDecoration(

@@ -58,30 +58,7 @@ class _ChatHistoryViewState extends State<ChatHistoryView> {
             return ListView.builder(
               reverse: true,
               itemCount: history.length,
-              itemBuilder: (context, index) {
-                final messageIndex = history.length - index - 1;
-                final message = history[messageIndex];
-                final isLastUserMessage =
-                    message.origin.isUser && messageIndex >= history.length - 2;
-                final canEdit =
-                    isLastUserMessage && widget.onEditMessage != null;
-                final isUser = message.origin.isUser;
-
-                return Padding(
-                  padding: const EdgeInsets.only(top: 6),
-                  child: isUser
-                      ? UserMessageView(
-                          message,
-                          onEdit: canEdit
-                              ? () => widget.onEditMessage?.call(message)
-                              : null,
-                        )
-                      : LlmMessageView(
-                          message,
-                          isWelcomeMessage: messageIndex == 0,
-                        ),
-                );
-              },
+              itemBuilder: (context, index) => ChatMessageView(history[history.length - index  - 1])
             );
           },
         ),

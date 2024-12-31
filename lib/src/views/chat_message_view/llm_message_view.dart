@@ -4,8 +4,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_ai_toolkit/src/chat_view_model/chat_view_model.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:flutter_ai_toolkit/src/providers/interface/message_origin.dart';
 
 import '../../chat_view_model/chat_view_model_client.dart';
 import '../../providers/interface/chat_message.dart';
@@ -17,12 +16,12 @@ import 'hovering_buttons.dart';
 
 /// A widget that displays an LLM (Language Model) message in a chat interface.
 @immutable
-class LlmMessageView extends StatelessWidget {
-  /// Creates an [LlmMessageView].
+class ChatMessageView extends StatelessWidget {
+  /// Creates an [ChatMessageView].
   ///
   /// The [message] parameter is required and represents the LLM chat message to
   /// be displayed.
-  const LlmMessageView(
+  const ChatMessageView(
     this.message, {
     this.isWelcomeMessage = false,
     super.key,
@@ -34,22 +33,29 @@ class LlmMessageView extends StatelessWidget {
   /// Whether the message is the welcome message.
   final bool isWelcomeMessage;
 
-  Widget _defaultBuilder (BuildContext context, ChatMessage message, LlmMessageStyle llmStyle, LlmChatViewStyle chatStyle) {
+  Widget _defaultBuilder (BuildContext context, ChatMessage message, ChatMessageStyle llmStyle, LlmChatViewStyle chatStyle) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if(message.leading.isNotEmpty) Row(
+        if(message.leading.isNotEmpty) Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             for (final fragment in message.leading)
               fragment.builder(context),
           ]
         ),
       
-        Container(
-          decoration: llmStyle.decoration,
-          child: AdaptiveCopyText(
-            chatStyle: chatStyle,
-            clipboardText: message.text,
-            child: message.outlet.builder(context))
+        HoveringButtons(
+          isUserMessage: message.origin == MessageOrigin.user,
+          chatStyle: chatStyle,
+          clipboardText: message.text,
+          child: Container(
+            decoration: llmStyle.decoration,
+            child: AdaptiveCopyText(
+              chatStyle: chatStyle,
+              clipboardText: message.text,
+              child: message.outlet.builder(context))
+          ),
         ),
       
         if(message.trailing.isNotEmpty) Column(
@@ -63,20 +69,20 @@ class LlmMessageView extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Flexible(
-          flex: 6,
-          child: ChatViewModelClient(
-            builder: (context, viewModel, child) {
-              final chatStyle = LlmChatViewStyle.resolve(viewModel.style);
-              final llmStyle = LlmMessageStyle.resolve(
-                chatStyle.llmMessageStyle,
-              );
+  Widget build(BuildContext context) => ChatViewModelClient(
+    builder: (context, viewModel, child) {
+      final chatStyle = LlmChatViewStyle.resolve(viewModel.style);
+      final llmStyle = ChatMessageStyle.resolve(
+        chatStyle.llmMessageStyle,
+      );
+      return Row(
+        children: [
+          if(message.origin == MessageOrigin.user) const Expanded(flex: 2, child: SizedBox()),
 
-              if(message.isUninitialized()) {
-                return Container(
+          Flexible(
+            flex: 6,
+            child: message.isUninitialized()
+              ? Container(
                   decoration: llmStyle.decoration,
                   child: SizedBox(
                     width: 24,
@@ -85,19 +91,17 @@ class LlmMessageView extends StatelessWidget {
                       color: chatStyle.progressIndicatorColor!,
                     ),
                   ),
-                );
-              }
-
-              return Builder(
+                )
+              : Builder(
                 builder: (context) => viewModel.responseBuilder?.call(context, message) ?? _defaultBuilder(context, message, llmStyle, chatStyle),
-              );
-            }
+              )
           ),
-        ),
-        const Flexible(flex: 2, child: SizedBox()),
-      ],
-    );
-  }
+
+          if(message.origin == MessageOrigin.llm) const Expanded(flex: 2, child: SizedBox()),
+        ],
+      );
+    }
+  );
 
   // @override
   // Widget build(BuildContext context) => Row(

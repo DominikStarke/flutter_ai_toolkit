@@ -46,9 +46,9 @@ UserMessageStyle _darkUserMessageStyle() {
   );
 }
 
-LlmMessageStyle _darkLlmMessageStyle() {
-  final style = LlmMessageStyle.defaultStyle();
-  return LlmMessageStyle(
+ChatMessageStyle _darkLlmMessageStyle() {
+  final style = ChatMessageStyle.defaultStyle();
+  return ChatMessageStyle(
     icon: style.icon,
     iconColor: _invertColor(style.iconColor),
     // inversion doesn't look great here
