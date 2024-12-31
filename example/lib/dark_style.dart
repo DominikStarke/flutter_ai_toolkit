@@ -34,20 +34,24 @@ LlmChatViewStyle darkChatViewStyle() {
   );
 }
 
-UserMessageStyle _darkUserMessageStyle() {
-  final style = UserMessageStyle.defaultStyle();
-  return UserMessageStyle(
-    textStyle: _invertTextStyle(style.textStyle),
+ChatMessageStyle _darkUserMessageStyle() {
+  final style = ChatMessageStyle.defaultUserStyle();
+  return ChatMessageStyle(
+    icon: style.icon,
+    iconColor: _invertColor(style.iconColor),
     // inversion doesn't look great here
-    // decoration: invertDecoration(style.decoration),
-    decoration: (style.decoration! as BoxDecoration).copyWith(
+    // iconDecoration: invertDecoration(style.iconDecoration),
+    iconDecoration: BoxDecoration(
       color: _greyBackground,
+      shape: BoxShape.circle,
     ),
+    markdownStyle: _invertMarkdownStyle(style.markdownStyle),
+    decoration: _invertDecoration(style.decoration),
   );
 }
 
 ChatMessageStyle _darkLlmMessageStyle() {
-  final style = ChatMessageStyle.defaultStyle();
+  final style = ChatMessageStyle.defaultLlmStyle();
   return ChatMessageStyle(
     icon: style.icon,
     iconColor: _invertColor(style.iconColor),

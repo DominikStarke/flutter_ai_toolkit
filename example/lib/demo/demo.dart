@@ -250,7 +250,7 @@ class _ChatPageState extends State<ChatPage>
         hintStyle:
             halloweenTextStyle.copyWith(color: Colors.orange.withAlpha(128)),
       ),
-      userMessageStyle: UserMessageStyle(
+      userMessageStyle: ChatMessageStyle(
         textStyle: halloweenTextStyle.copyWith(color: Colors.black),
         decoration: BoxDecoration(
           gradient: LinearGradient(

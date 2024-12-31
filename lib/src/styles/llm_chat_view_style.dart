@@ -8,10 +8,9 @@ import 'action_button_style.dart';
 import 'action_button_type.dart';
 import 'chat_input_style.dart';
 import 'file_attachment_style.dart';
-import 'llm_message_style.dart';
+import 'chat_message_style.dart';
 import 'suggestion_style.dart';
 import 'toolkit_colors.dart';
-import 'user_message_style.dart';
 
 /// Style for the entire chat widget.
 @immutable
@@ -58,7 +57,7 @@ class LlmChatViewStyle {
       backgroundColor: style?.backgroundColor ?? defaultStyle.backgroundColor,
       progressIndicatorColor:
           style?.progressIndicatorColor ?? defaultStyle.progressIndicatorColor,
-      userMessageStyle: UserMessageStyle.resolve(style?.userMessageStyle,
+      userMessageStyle: ChatMessageStyle.resolve(style?.userMessageStyle,
           defaultStyle: defaultStyle.userMessageStyle),
       llmMessageStyle: ChatMessageStyle.resolve(style?.llmMessageStyle,
           defaultStyle: defaultStyle.llmMessageStyle),
@@ -130,8 +129,8 @@ class LlmChatViewStyle {
   factory LlmChatViewStyle._lightStyle() => LlmChatViewStyle(
         backgroundColor: ToolkitColors.containerBackground,
         progressIndicatorColor: ToolkitColors.black,
-        userMessageStyle: UserMessageStyle.defaultStyle(),
-        llmMessageStyle: ChatMessageStyle.defaultStyle(),
+        userMessageStyle: ChatMessageStyle.defaultUserStyle(),
+        llmMessageStyle: ChatMessageStyle.defaultLlmStyle(),
         chatInputStyle: ChatInputStyle.defaultStyle(),
         addButtonStyle: ActionButtonStyle.defaultStyle(ActionButtonType.add),
         stopButtonStyle: ActionButtonStyle.defaultStyle(ActionButtonType.stop),
@@ -168,7 +167,7 @@ class LlmChatViewStyle {
   final Color? progressIndicatorColor;
 
   /// Style for user messages.
-  final UserMessageStyle? userMessageStyle;
+  final ChatMessageStyle? userMessageStyle;
 
   /// Style for LLM messages.
   final ChatMessageStyle? llmMessageStyle;

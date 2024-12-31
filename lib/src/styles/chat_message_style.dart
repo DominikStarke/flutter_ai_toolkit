@@ -19,6 +19,7 @@ class ChatMessageStyle {
     this.iconDecoration,
     this.decoration,
     this.markdownStyle,
+    this.textStyle,
   });
 
   /// Resolves the provided style with the default style.
@@ -40,18 +41,20 @@ class ChatMessageStyle {
     ChatMessageStyle? style, {
     ChatMessageStyle? defaultStyle,
   }) {
-    defaultStyle ??= ChatMessageStyle.defaultStyle();
+    defaultStyle ??= ChatMessageStyle.defaultLlmStyle();
     return ChatMessageStyle(
       icon: style?.icon ?? defaultStyle.icon,
       iconColor: style?.iconColor ?? defaultStyle.iconColor,
       iconDecoration: style?.iconDecoration ?? defaultStyle.iconDecoration,
       markdownStyle: style?.markdownStyle ?? defaultStyle.markdownStyle,
       decoration: style?.decoration ?? defaultStyle.decoration,
+      textStyle: style?.textStyle ?? defaultStyle.textStyle,
     );
   }
 
   /// Provides a default style.
-  factory ChatMessageStyle.defaultStyle() => ChatMessageStyle._lightStyle();
+  factory ChatMessageStyle.defaultLlmStyle() => ChatMessageStyle._lightStyle();
+  factory ChatMessageStyle.defaultUserStyle() => ChatMessageStyle._lightStyle();
 
   /// Provides a default light style.
   factory ChatMessageStyle._lightStyle() => ChatMessageStyle(
@@ -93,6 +96,7 @@ class ChatMessageStyle {
             bottomRight: Radius.circular(20),
           ),
         ),
+        textStyle: ToolkitTextStyles.body1,
       );
 
   /// The icon to display for the LLM messages.
@@ -109,4 +113,6 @@ class ChatMessageStyle {
 
   /// The markdown style sheet for LLM messages.
   final MarkdownStyleSheet? markdownStyle;
+
+  final TextStyle? textStyle;
 }

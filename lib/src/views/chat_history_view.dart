@@ -7,8 +7,7 @@ import 'package:flutter/widgets.dart';
 import '../chat_view_model/chat_view_model_client.dart';
 import '../providers/interface/chat_message.dart';
 import '../providers/interface/message_origin.dart';
-import 'chat_message_view/llm_message_view.dart';
-import 'chat_message_view/user_message_view.dart';
+import 'chat_message_view/chat_message_view.dart';
 
 /// A widget that displays a history of chat messages.
 ///
@@ -58,7 +57,10 @@ class _ChatHistoryViewState extends State<ChatHistoryView> {
             return ListView.builder(
               reverse: true,
               itemCount: history.length,
-              itemBuilder: (context, index) => ChatMessageView(history[history.length - index  - 1])
+              itemBuilder: (context, index) => ChatMessageView(
+                history[history.length - index  - 1],
+                onEdit: () => widget.onEditMessage?.call(history[history.length - index  - 1])
+              )
             );
           },
         ),
