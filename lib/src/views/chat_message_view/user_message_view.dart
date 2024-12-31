@@ -50,7 +50,7 @@ class UserMessageView extends StatelessWidget {
           ],
           ChatViewModelClient(
             builder: (context, viewModel, child) {
-              final text = message.text!;
+              final text = message.text;
               final chatStyle = LlmChatViewStyle.resolve(viewModel.style);
               final userStyle = UserMessageStyle.resolve(
                 chatStyle.userMessageStyle,

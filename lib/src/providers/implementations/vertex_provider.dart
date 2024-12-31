@@ -136,7 +136,7 @@ class VertexProvider extends LlmProvider with ChangeNotifier {
   static Content _contentFrom(ChatMessage message) => Content(
         message.origin.isUser ? 'user' : 'model',
         [
-          TextPart(message.text ?? ''),
+          TextPart(message.text),
           ...message.attachments.map(_partFrom),
         ],
       );

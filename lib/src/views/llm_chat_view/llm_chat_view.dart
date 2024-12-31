@@ -280,7 +280,7 @@ class _LlmChatViewState extends State<LlmChatView>
     // text message to keep progressing. plus we don't want to just show an
     // empty LLM message.
     final llmMessage = widget.viewModel.provider.history.last;
-    if (llmMessage.text == null) {
+    if (llmMessage.isUninitialized()) {
       llmMessage.append(error is LlmCancelException ? 'CANCEL' : 'ERROR');
     }
 

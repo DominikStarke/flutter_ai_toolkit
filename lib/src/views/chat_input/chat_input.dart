@@ -117,7 +117,7 @@ class _ChatInputState extends State<ChatInput> {
   void didUpdateWidget(covariant ChatInput oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.initialMessage != null) {
-      _textController.text = widget.initialMessage!.text ?? '';
+      _textController.text = widget.initialMessage!.text;
       _attachments.clear();
       _attachments.addAll(widget.initialMessage!.attachments);
     }

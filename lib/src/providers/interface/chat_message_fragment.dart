@@ -1,7 +1,8 @@
 import 'package:flutter/widgets.dart';
 
 abstract class ChatMessageFragment {
-  const ChatMessageFragment();
+  Key key = GlobalKey();
+  ChatMessageFragment();
 
   Widget builder (BuildContext context);
 }

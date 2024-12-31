@@ -8,6 +8,8 @@
 import 'dart:convert';
 
 
+import 'package:flutter_ai_toolkit/src/views/chat_message_view/markdown_fragment.dart';
+
 import '../../providers/interface/attachments.dart';
 import 'message_origin.dart';
 import 'chat_message_fragment.dart';
@@ -29,9 +31,10 @@ class ChatMessage {
   /// It can be used to pass additional information from thr provider to the builder.
   ChatMessage({
     required this.origin,
-    required this.text,
+    String? text,
     required this.attachments,
-  }):assert(origin.isUser && text != null && text.isNotEmpty || origin.isLlm);
+  }): _textBuffer = text == null ? null : StringBuffer(text),
+      assert(origin.isUser && text != null && text.isNotEmpty || origin.isLlm);
 
   /// Converts a JSON map representation to a [ChatMessage].
   ///
@@ -85,7 +88,7 @@ class ChatMessage {
       );
 
   /// Text content of the message.
-  String? text;
+  StringBuffer? _textBuffer = StringBuffer();
 
   /// The origin of the message (user or LLM).
   final MessageOrigin origin;
@@ -93,18 +96,33 @@ class ChatMessage {
   /// Any attachments associated with the message.
   final Iterable<Attachment> attachments;
 
+  /// The various builders for each fragment (should be actual order)
   /// User definable data associated with the message.
-  final List<ChatMessageFragment> fragments = [];
+  final List<ChatMessageFragment> leading = []; /// Typically these are file attachments
+  final List<ChatMessageFragment> body = []; /// 
+  final ChatMessageFragment outlet = MarkdownFragment(); /// This is typically the one filled during generation
+  final List<ChatMessageFragment> trailing = [];
 
   /// Appends additional text to the existing message content.
   ///
   /// This is typically used for LLM messages that are streamed in parts.
-  void append(String text) => this.text = (this.text ?? '') + text;
+  void append (String text) {
+    if(_textBuffer == null) {
+      _textBuffer = StringBuffer(text);
+    } else {
+      _textBuffer!.write(text);
+    }
+  }
+
+  String get text => _textBuffer?.toString() ?? '';
+
+  /// Returns true if text is uninitialized (null).
+  bool isUninitialized () => _textBuffer == null;
 
   @override
   String toString() => 'ChatMessage('
       'origin: $origin, '
-      'text: $text, '
+      'text: $_textBuffer, '
       'attachments: $attachments'
       ')';
 
@@ -121,7 +139,7 @@ class ChatMessage {
   ///     (for files) or a URL (for links).
   Map<String, dynamic> toJson() => {
         'origin': origin.name,
-        'text': text,
+        'text': _textBuffer,
         'attachments': [
           for (final attachment in attachments)
             {

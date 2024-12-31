@@ -20,3 +20,4 @@ export 'src/providers/interface/chat_message_fragment.dart';
 export 'src/providers/providers.dart';
 export 'src/styles/styles.dart';
 export 'src/views/llm_chat_view/llm_chat_view.dart';
+export 'src/views/chat_message_view/markdown_fragment.dart';
