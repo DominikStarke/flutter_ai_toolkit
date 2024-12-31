@@ -15,7 +15,7 @@ import 'message_origin.dart';
 /// This class encapsulates the properties and behavior of a chat message,
 /// including its unique identifier, origin (user or LLM), text content,
 /// and any attachments.
-class ChatMessage {
+class ChatMessage<T> {
   /// Constructs a [ChatMessage] instance.
   ///
   /// The [origin] parameter specifies the origin of the message (user or LLM).
@@ -23,10 +23,13 @@ class ChatMessage {
   /// empty if the message is from an LLM. For user-originated messages, [text]
   /// must not be null or empty. The [attachments] parameter is a list of any
   /// files or media attached to the message.
+  /// The [userData] parameter is user definable data associated with the message.
+  /// It can be used to pass additional information from thr provider to the builder.
   ChatMessage({
     required this.origin,
     required this.text,
     required this.attachments,
+             this.userData,
   }) : assert(origin.isUser && text != null && text.isNotEmpty || origin.isLlm);
 
   /// Converts a JSON map representation to a [ChatMessage].
@@ -88,6 +91,9 @@ class ChatMessage {
 
   /// Any attachments associated with the message.
   final Iterable<Attachment> attachments;
+
+  /// User definable data associated with the message.
+  final T? userData;  
 
   /// Appends additional text to the existing message content.
   ///

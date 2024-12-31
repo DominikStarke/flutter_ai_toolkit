@@ -143,7 +143,7 @@ well as any trailing text commentary you care to provide:
               provider: _provider,
               welcomeMessage: _welcomeMessage,
               responseBuilder: (context, response) => RecipeResponseView(
-                response,
+                response.text ?? '',
               ),
             ),
           ],
