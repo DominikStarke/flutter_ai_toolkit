@@ -5,6 +5,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_ai_toolkit/src/providers/interface/message_origin.dart';
+import 'package:flutter_ai_toolkit/src/views/chat_message_view/attachment_fragment.dart';
 
 import '../../chat_view_model/chat_view_model_client.dart';
 import '../../providers/interface/chat_message.dart';
@@ -50,6 +51,16 @@ class ChatMessageView extends StatelessWidget {
           children: [
             for (final fragment in message.leading)
               fragment.builder(context),
+          ]
+        ),
+
+        if(message.attachments.isNotEmpty) Column(
+          children: [
+            for (final attachment in message.attachments)
+              AttachmentFragment(
+                attachment: attachment,
+                chatStyle: chatStyle
+              ).builder(context),
           ]
         ),
       
@@ -104,16 +115,16 @@ class ChatMessageView extends StatelessWidget {
             child: message.isUninitialized()
               ? Container(
                   decoration: messageStyle.decoration,
-                  child: SizedBox(
-                    width: 24,
-                    child: JumpingDotsProgressIndicator(
-                      fontSize: 24,
-                      color: chatStyle.progressIndicatorColor!,
-                    ),
+                  width: 56,
+                  height: 56,
+                  child: JumpingDotsProgressIndicator(
+                    fontSize: 24,
+                    color: chatStyle.progressIndicatorColor!,
                   ),
                 )
-              : Builder(
-                builder: (context) => viewModel.responseBuilder?.call(context, message) ?? _defaultBuilder(context, message, messageStyle, chatStyle),
+              : Builder(builder: (context)
+                => viewModel.responseBuilder?.call(context, message)
+                ?? _defaultBuilder(context, message, messageStyle, chatStyle),
               )
           ),
 
