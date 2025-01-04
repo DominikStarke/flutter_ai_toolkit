@@ -5,7 +5,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_ai_toolkit/src/providers/interface/message_origin.dart';
-import 'package:flutter_ai_toolkit/src/views/chat_message_view/attachment_fragment.dart';
+import 'package:flutter_ai_toolkit/src/views/attachment_view/attachment_view.dart';
 
 import '../../chat_view_model/chat_view_model_client.dart';
 import '../../providers/interface/chat_message.dart';
@@ -44,26 +44,23 @@ class ChatMessageView extends StatelessWidget {
         ? CrossAxisAlignment.end
         : CrossAxisAlignment.start,
       children: [
+        if(message.attachments.isNotEmpty) Column(
+          children: [
+            for (final attachment in message.attachments)
+              AttachmentView(attachment),
+          ]
+        ),
+      
         if(message.leading.isNotEmpty) Column(
           crossAxisAlignment: message.origin == MessageOrigin.user
             ? CrossAxisAlignment.end
             : CrossAxisAlignment.start,
           children: [
             for (final fragment in message.leading)
-              fragment.builder(context),
+              fragment,
           ]
         ),
 
-        if(message.attachments.isNotEmpty) Column(
-          children: [
-            for (final attachment in message.attachments)
-              AttachmentFragment(
-                attachment: attachment,
-                chatStyle: chatStyle
-              ).builder(context),
-          ]
-        ),
-      
         HoveringButtons(
           isUserMessage: message.origin == MessageOrigin.user,
           chatStyle: chatStyle,
@@ -87,7 +84,7 @@ class ChatMessageView extends StatelessWidget {
         if(message.trailing.isNotEmpty) Column(
           children: [
             for (final fragment in message.leading)
-              fragment.builder(context),
+              fragment,
           ]
         ),
       ]

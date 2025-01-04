@@ -8,11 +8,11 @@
 import 'dart:convert';
 
 
+import 'package:flutter/widgets.dart';
 import 'package:flutter_ai_toolkit/src/views/chat_message_view/markdown_fragment.dart';
 
 import '../../providers/interface/attachments.dart';
 import 'message_origin.dart';
-import 'chat_message_fragment.dart';
 
 /// Represents a message in a chat conversation.
 ///
@@ -101,9 +101,9 @@ class ChatMessage {
 
   /// The various builders for each fragment (should be actual order)
   /// User definable data associated with the message.
-  final List<ChatMessageFragment> leading = []; /// Typically these are file attachments, loaders, search results, etc.
+  final List<Widget> leading = []; /// Typically these are file attachments, loaders, search results, etc.
   final MarkdownFragment outlet = MarkdownFragment(); /// This is typically the one filled during generation
-  final List<ChatMessageFragment> trailing = [];
+  final List<Widget> trailing = [];
 
   /// Appends additional text to the existing message content.
   ///
