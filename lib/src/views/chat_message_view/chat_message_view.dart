@@ -105,17 +105,17 @@ class ChatMessageView extends StatelessWidget {
           ? MainAxisAlignment.end
           : MainAxisAlignment.start,
         children: [
-          if(message.origin == MessageOrigin.user) const Flexible(flex: 2, child: SizedBox()),
+          if(message.origin == MessageOrigin.user) const Flexible(flex: 2, child: SizedBox()),  // TODO: Make this configurable as theme property (unuccupiedSpaceFlex)
 
           Flexible(
-            flex: 6,
+            flex: message.origin == MessageOrigin.user ? 6 : 20, // TODO: Make this configurable as theme property (user and llm styles)
             child: message.isUninitialized()
               ? Container(
                   decoration: messageStyle.decoration,
-                  width: 56,
-                  height: 56,
+                  width: 56, // TODO: Make this configurable as theme property
+                  height: 56, // TODO: Make this configurable as theme property
                   child: JumpingDotsProgressIndicator(
-                    fontSize: 24,
+                    fontSize: 24, // TODO: Make this configurable as theme property
                     color: chatStyle.progressIndicatorColor!,
                   ),
                 )

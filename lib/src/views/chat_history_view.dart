@@ -40,29 +40,38 @@ class ChatHistoryView extends StatefulWidget {
 
 class _ChatHistoryViewState extends State<ChatHistoryView> {
   @override
-  Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
-        child: ChatViewModelClient(
-          builder: (context, viewModel, child) {
-            final history = [
-              if (viewModel.welcomeMessage != null)
-                ChatMessage(
-                  origin: MessageOrigin.llm,
-                  text: viewModel.welcomeMessage,
-                  attachments: [],
-                ),
-              ...viewModel.provider.history,
-            ];
-
-            return ListView.builder(
-              reverse: true,
-              itemCount: history.length,
-              itemBuilder: (context, index) => ChatMessageView(
-                history[history.length - index  - 1],
-                onEdit: () => widget.onEditMessage?.call(history[history.length - index  - 1])
-              )
-            );
-          },
+  Widget build(BuildContext context) => ChatViewModelClient(
+    builder: (context, viewModel, child) {
+      final history = [
+        if (viewModel.welcomeMessage != null)
+          ChatMessage(
+            origin: MessageOrigin.llm,
+            text: viewModel.welcomeMessage,
+            attachments: [],
+          ),
+        ...viewModel.provider.history,
+      ];
+  
+      return ListView.builder(
+        padding: const EdgeInsets.only( // TODO: Make this configurable as theme property (chatSafeArea)
+          top: 56, 
+          bottom: 56,
+          left: 8,
+          right: 8,
         ),
+        reverse: true,
+        cacheExtent: 400, // TODO: Make this configurable as theme property (chatCacheExtent)
+        itemCount: history.length,
+        itemBuilder: (context, index) => Center(
+          child: SizedBox(
+            width: 600, // TODO: Make this configurable as theme property (chatMaxWidth)
+            child: ChatMessageView(
+              history[history.length - index  - 1],
+              onEdit: () => widget.onEditMessage?.call(history[history.length - index  - 1])
+            ),
+          ),
+        )
       );
+    },
+  );
 }
