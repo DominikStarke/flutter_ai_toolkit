@@ -141,7 +141,7 @@ class _ChatPageState extends State<ChatPage>
 
     return LlmChatViewStyle(
       backgroundColor: Colors.transparent,
-      progressIndicatorColor: Colors.purple,
+      indicatorStyle: Colors.purple,
       suggestionStyle: SuggestionStyle(
         textStyle: halloweenTextStyle.copyWith(color: Colors.black),
         decoration: BoxDecoration(

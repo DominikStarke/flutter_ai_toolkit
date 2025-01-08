@@ -11,7 +11,7 @@ LlmChatViewStyle darkChatViewStyle() {
   final style = LlmChatViewStyle.defaultStyle();
   return LlmChatViewStyle(
     backgroundColor: _invertColor(style.backgroundColor),
-    progressIndicatorColor: _invertColor(style.progressIndicatorColor),
+    indicatorStyle: _invertColor(style.indicatorStyle),
     userMessageStyle: _darkUserMessageStyle(),
     llmMessageStyle: _darkLlmMessageStyle(),
     chatInputStyle: _darkChatInputStyle(),
@@ -46,9 +46,9 @@ UserMessageStyle _darkUserMessageStyle() {
   );
 }
 
-LlmMessageStyle _darkLlmMessageStyle() {
-  final style = LlmMessageStyle.defaultStyle();
-  return LlmMessageStyle(
+ChatMessageStyle _darkLlmMessageStyle() {
+  final style = ChatMessageStyle.defaultStyle();
+  return ChatMessageStyle(
     icon: style.icon,
     iconColor: _invertColor(style.iconColor),
     // inversion doesn't look great here

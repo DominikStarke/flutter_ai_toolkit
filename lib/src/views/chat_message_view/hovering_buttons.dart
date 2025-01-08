@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 import '../../styles/llm_chat_view_style.dart';
@@ -39,64 +40,77 @@ class HoveringButtons extends StatelessWidget {
   /// The callback to be invoked when the edit button is pressed.
   final VoidCallback? onEdit;
 
-  static const _iconSize = 16;
+  static const _iconSize = 12;
   final _hovering = ValueNotifier(false);
 
   @override
   Widget build(BuildContext context) {
-    final paddedChild = Padding(
-      padding: const EdgeInsets.only(bottom: _iconSize + 2),
-      child: child,
+
+    return MouseRegion(
+      onEnter: (_) => _hovering.value = true,
+      onExit: (_) => _hovering.value = false,
+      child: ListenableBuilder(
+        listenable: _hovering,
+        child: child,
+        builder: (context, child) {
+          if (!_hovering.value) {
+            return Padding(
+              padding: const EdgeInsets.only(bottom: _iconSize + 8),
+              child: child!,
+            );
+          }
+
+          return Column(
+            crossAxisAlignment: isUserMessage
+                ? CrossAxisAlignment.end
+                : CrossAxisAlignment.start,
+            children: [
+              child!,
+              Row(
+                mainAxisAlignment: isUserMessage
+                ? MainAxisAlignment.end
+                : MainAxisAlignment.start,
+                spacing: 6,
+                children: [
+
+                  if (onEdit != null) IconButton(
+                    constraints: BoxConstraints(maxHeight: _iconSize + 8),
+                    style: ButtonStyle(
+                      padding: WidgetStatePropertyAll(EdgeInsets.all(4)),
+                      backgroundColor: WidgetStatePropertyAll(Colors.transparent),
+                    ),
+                    icon: Icon(
+                      chatStyle.editButtonStyle!.icon,
+                      size: _iconSize.toDouble(),
+                      color: chatStyle.editButtonStyle!.iconColor,
+                    ),
+                    onPressed: onEdit,
+                  ),
+
+                  IconButton(
+                    constraints: BoxConstraints(maxHeight: _iconSize + 8),
+                    style: ButtonStyle(
+                      padding: WidgetStatePropertyAll(EdgeInsets.all(4)),
+                      backgroundColor: WidgetStatePropertyAll(Colors.transparent),
+                    ),
+                    icon: Icon(
+                      chatStyle.copyButtonStyle!.icon,
+                      size: _iconSize.toDouble(),
+                      color: chatStyle.copyButtonStyle!.iconColor,
+                    ),
+                    onPressed: () => unawaited(
+                      copyToClipboard(context, clipboardText!),
+                    ),
+                  )
+
+                ],
+              ),
+            ],
+          );
+        }
+      ),
     );
 
-    return clipboardText == null
-        ? paddedChild
-        : MouseRegion(
-            onEnter: (_) => _hovering.value = true,
-            onExit: (_) => _hovering.value = false,
-            child: Stack(
-              children: [
-                paddedChild,
-                ListenableBuilder(
-                  listenable: _hovering,
-                  builder: (context, child) => _hovering.value
-                      ? Positioned(
-                          bottom: 0,
-                          right: isUserMessage ? 0 : null,
-                          left: isUserMessage ? null : 32,
-                          child: Row(
-                            spacing: 6,
-                            children: [
-                              if (onEdit != null)
-                                GestureDetector(
-                                  onTap: onEdit,
-                                  child: Icon(
-                                    chatStyle.editButtonStyle!.icon,
-                                    size: _iconSize.toDouble(),
-                                    color: invertColor(
-                                      chatStyle.editButtonStyle!.iconColor,
-                                    ),
-                                  ),
-                                ),
-                              GestureDetector(
-                                onTap: () => unawaited(
-                                  copyToClipboard(context, clipboardText!),
-                                ),
-                                child: Icon(
-                                  chatStyle.copyButtonStyle!.icon,
-                                  size: 12,
-                                  color: invertColor(
-                                    chatStyle.copyButtonStyle!.iconColor,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        )
-                      : const SizedBox(),
-                ),
-              ],
-            ),
-          );
+
   }
 }

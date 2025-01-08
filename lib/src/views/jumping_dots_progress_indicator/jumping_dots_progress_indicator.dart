@@ -25,6 +25,7 @@ class JumpingDotsProgressIndicator extends StatefulWidget {
     this.fontSize = 10.0,
     this.dotSpacing = 0.0,
     this.milliseconds = 250,
+    this.size = 56.0,
   });
 
   /// Number of dots that are added in a horizontal list, default = 3.
@@ -41,6 +42,9 @@ class JumpingDotsProgressIndicator extends StatefulWidget {
 
   /// Time of one complete cycle of animation, default 250 milliseconds.
   final int milliseconds;
+
+  /// The size of the container box.
+  final double size;
 
   @override
   State<JumpingDotsProgressIndicator> createState() =>
@@ -108,12 +112,14 @@ class _JumpingDotsProgressIndicatorState
 
   @override
   Widget build(BuildContext context) => SizedBox(
-        height: widget.fontSize + (widget.fontSize * 0.5),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: _widgets,
-        ),
-      );
+    width: widget.size,
+    height: widget.size,
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: _widgets,
+    ),
+  );
 
   @override
   void dispose() {

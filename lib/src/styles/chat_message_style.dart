@@ -11,19 +11,21 @@ import 'toolkit_text_styles.dart';
 
 /// Style for LLM messages.
 @immutable
-class LlmMessageStyle {
+class ChatMessageStyle {
   /// Creates an LlmMessageStyle.
-  const LlmMessageStyle({
+  const ChatMessageStyle({
     this.icon,
     this.iconColor,
     this.iconDecoration,
     this.decoration,
     this.markdownStyle,
+    this.padding,
+    this.flexSpace = 8,
   });
 
   /// Resolves the provided style with the default style.
   ///
-  /// This method creates a new [LlmMessageStyle] by combining the provided
+  /// This method creates a new [ChatMessageStyle] by combining the provided
   /// [style] with the [defaultStyle]. If a property is not specified in the
   /// provided [style], it falls back to the corresponding property in the
   /// [defaultStyle].
@@ -35,26 +37,29 @@ class LlmMessageStyle {
   ///   - [defaultStyle]: The default style to use as a fallback. If null, uses
   ///     [LlmMessageStyle.defaultStyle].
   ///
-  /// Returns: A new [LlmMessageStyle] instance with resolved properties.
-  factory LlmMessageStyle.resolve(
-    LlmMessageStyle? style, {
-    LlmMessageStyle? defaultStyle,
+  /// Returns: A new [ChatMessageStyle] instance with resolved properties.
+  factory ChatMessageStyle.resolve(
+    ChatMessageStyle? style, {
+    ChatMessageStyle? defaultStyle,
   }) {
-    defaultStyle ??= LlmMessageStyle.defaultStyle();
-    return LlmMessageStyle(
+    defaultStyle ??= ChatMessageStyle.defaultLlmStyle();
+    return ChatMessageStyle(
       icon: style?.icon ?? defaultStyle.icon,
       iconColor: style?.iconColor ?? defaultStyle.iconColor,
       iconDecoration: style?.iconDecoration ?? defaultStyle.iconDecoration,
       markdownStyle: style?.markdownStyle ?? defaultStyle.markdownStyle,
       decoration: style?.decoration ?? defaultStyle.decoration,
+      padding: style?.padding ?? defaultStyle.padding,
+      flexSpace: style?.flexSpace ?? defaultStyle.flexSpace,
     );
   }
 
   /// Provides a default style.
-  factory LlmMessageStyle.defaultStyle() => LlmMessageStyle._lightStyle();
+  factory ChatMessageStyle.defaultLlmStyle() => ChatMessageStyle._lightStyle();
+  factory ChatMessageStyle.defaultUserStyle() => ChatMessageStyle._lightStyle();
 
   /// Provides a default light style.
-  factory LlmMessageStyle._lightStyle() => LlmMessageStyle(
+  factory ChatMessageStyle._lightStyle() => ChatMessageStyle(
         icon: ToolkitIcons.spark_icon,
         iconColor: ToolkitColors.darkIcon,
         iconDecoration: const BoxDecoration(
@@ -93,6 +98,8 @@ class LlmMessageStyle {
             bottomRight: Radius.circular(20),
           ),
         ),
+        padding: const EdgeInsets.all(8),
+        flexSpace: 12,
       );
 
   /// The icon to display for the LLM messages.
@@ -107,6 +114,14 @@ class LlmMessageStyle {
   /// The decoration for LLM message bubbles.
   final Decoration? decoration;
 
+  /// Padding inside the message, around the text.
+  final EdgeInsetsGeometry? padding;
+
   /// The markdown style sheet for LLM messages.
   final MarkdownStyleSheet? markdownStyle;
+
+  /// [$1] the flex size for the space between messages.  
+  /// 
+  /// We assume flex 20 so messages takes `20 - flexSpace` flex spac..
+  final int flexSpace;
 }

@@ -3,12 +3,13 @@
 // found in the LICENSE file.
 
 import 'package:flutter/widgets.dart';
+import 'package:flutter_ai_toolkit/src/chat_view_model/chat_view_model.dart';
+import 'package:flutter_ai_toolkit/src/chat_view_model/chat_view_model_provider.dart';
 
-import '../chat_view_model/chat_view_model_client.dart';
 import '../providers/interface/chat_message.dart';
 import '../providers/interface/message_origin.dart';
-import 'chat_message_view/llm_message_view.dart';
-import 'chat_message_view/user_message_view.dart';
+import 'chat_message_view/chat_message_view.dart';
+import 'package:super_sliver_list/super_sliver_list.dart';
 
 /// A widget that displays a history of chat messages.
 ///
@@ -19,6 +20,7 @@ import 'chat_message_view/user_message_view.dart';
 class ChatHistoryView extends StatefulWidget {
   /// Creates a [ChatHistoryView].
   ///
+  /// FIXME: if a message is editable should be decided by the provider / message, not the view.
   /// If [onEditMessage] is provided, it will be called when a user initiates an
   /// edit action on an editable message (typically the last user message in the
   /// history).
@@ -40,50 +42,55 @@ class ChatHistoryView extends StatefulWidget {
 }
 
 class _ChatHistoryViewState extends State<ChatHistoryView> {
+  final ScrollController controller = ScrollController();
+  final ListController listController = ListController();
+  late ChatViewModel viewModel = ChatViewModelProvider.of(context);
+
+  bool keepScroll = false;
+
   @override
-  Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
-        child: ChatViewModelClient(
-          builder: (context, viewModel, child) {
-            final history = [
-              if (viewModel.welcomeMessage != null)
-                ChatMessage(
-                  origin: MessageOrigin.llm,
-                  text: viewModel.welcomeMessage,
-                  attachments: [],
-                ),
-              ...viewModel.provider.history,
-            ];
+  initState() {
+    super.initState();
+    controller.addListener(() {
+      keepScroll = controller.offset == 0;
+    });
+  }
 
-            return ListView.builder(
-              reverse: true,
-              itemCount: history.length,
-              itemBuilder: (context, index) {
-                final messageIndex = history.length - index - 1;
-                final message = history[messageIndex];
-                final isLastUserMessage =
-                    message.origin.isUser && messageIndex >= history.length - 2;
-                final canEdit =
-                    isLastUserMessage && widget.onEditMessage != null;
-                final isUser = message.origin.isUser;
+  @override
+  void didUpdateWidget(covariant ChatHistoryView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if(keepScroll) {
+        controller.jumpTo(0);
+      }
+    });
 
-                return Padding(
-                  padding: const EdgeInsets.only(top: 6),
-                  child: isUser
-                      ? UserMessageView(
-                          message,
-                          onEdit: canEdit
-                              ? () => widget.onEditMessage?.call(message)
-                              : null,
-                        )
-                      : LlmMessageView(
-                          message,
-                          isWelcomeMessage: messageIndex == 0,
-                        ),
-                );
-              },
-            );
-          },
+    viewModel = ChatViewModelProvider.of(context);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final chatStyle = viewModel.style;
+
+    final history = [
+      if (viewModel.welcomeMessage != null)
+        ChatMessage(
+          origin: MessageOrigin.llm,
+          text: viewModel.welcomeMessage,
+          attachments: [],
         ),
-      );
+      ...viewModel.provider.history,
+    ];
+
+    return SuperListView.separated(
+      separatorBuilder: (context, index) => SizedBox(height: chatStyle?.spacing ?? 8),
+      reverse: true,
+      padding: EdgeInsets.only(top: 56, left: 8, right: 8, bottom: 8),
+      itemCount: history.length,
+      itemBuilder: (context, index) => ChatMessageView(
+        history[history.length - index  - 1],
+        onEdit: () => widget.onEditMessage?.call(history[history.length - index  - 1])
+      )
+    );
+  } 
 }

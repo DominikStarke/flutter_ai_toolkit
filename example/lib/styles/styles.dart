@@ -120,7 +120,7 @@ class _ChatPageState extends State<ChatPage>
               provider: _provider!,
               style: LlmChatViewStyle(
                 backgroundColor: Colors.transparent,
-                progressIndicatorColor: Colors.purple,
+                indicatorStyle: Colors.purple,
                 chatInputStyle: ChatInputStyle(
                   backgroundColor: _controller.isAnimating
                       ? Colors.transparent
