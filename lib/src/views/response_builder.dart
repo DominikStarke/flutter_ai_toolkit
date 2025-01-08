@@ -11,7 +11,7 @@ import 'package:flutter_ai_toolkit/flutter_ai_toolkit.dart';
 /// [context] is the build context, which can be used to access theme data and
 /// other contextual information.
 ///
-/// [response] is the text of the response from the LLM.
+/// [response] is the message containing the response text from the LLM.
 ///
 /// The function should return a [Widget] that represents the formatted response
 /// in the chat interface.
