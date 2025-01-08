@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_ai_toolkit/flutter_ai_toolkit.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 
 import '../data/recipe_data.dart';
@@ -10,7 +11,7 @@ import 'recipe_content_view.dart';
 class RecipeResponseView extends StatelessWidget {
   const RecipeResponseView(this.response, {super.key});
 
-  final String response;
+  final ChatMessage response;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,7 @@ class RecipeResponseView extends StatelessWidget {
     // created with the response from the LLM as the response streams in, so
     // many not be a complete response yet
     try {
-      final map = jsonDecode(response);
+      final map = jsonDecode(response.text ?? "");
       final recipesWithText = map['recipes'] as List<dynamic>;
       finalText = map['text'] as String?;
 
@@ -55,11 +56,11 @@ class RecipeResponseView extends StatelessWidget {
 
     if (children.isEmpty) {
       try {
-        final map = jsonDecode(response);
+        final map = jsonDecode(response.text ?? "");
         finalText = map['text'] as String?;
       } catch (e) {
         debugPrint('Error parsing response: $e');
-        finalText = response;
+        finalText = response.text;
       }
     }
 

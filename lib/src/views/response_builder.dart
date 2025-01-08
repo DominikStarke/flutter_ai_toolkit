@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:flutter/widgets.dart';
+import 'package:flutter_ai_toolkit/flutter_ai_toolkit.dart';
 
 /// A function type that defines how to build a widget for displaying a response
 /// in the chat interface.
@@ -16,5 +17,5 @@ import 'package:flutter/widgets.dart';
 /// in the chat interface.
 typedef ResponseBuilder = Widget Function(
   BuildContext context,
-  String response,
+  ChatMessage response,
 );

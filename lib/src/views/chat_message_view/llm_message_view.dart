@@ -90,7 +90,7 @@ class LlmMessageView extends StatelessWidget {
                                           )
                                         : viewModel.responseBuilder!(
                                             context,
-                                            text,
+                                            message,
                                           ),
                                   ),
                           ),
